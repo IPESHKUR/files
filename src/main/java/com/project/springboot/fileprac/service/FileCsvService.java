@@ -19,20 +19,14 @@ import java.util.logging.Logger;
 public class FileCsvService {
 
     private final Logger log = Logger.getLogger(FileCsvService.class.getName());
+
     private final String fileName = "example.csv";
 
     private final SupplierRepository supplierRepository;
 
 
     public void createCsvFile() {
-        Path filePath = Path.of(fileName);
-        if (Files.exists(filePath)) {
-            try {
-                Files.deleteIfExists(filePath);
-            } catch (IOException e) {
-                log.info("Ошибка при удалении файла: " + e.getMessage());
-            }
-        }
+        updateCsvFile();
         List<Supplier> supplierList = supplierRepository.findAll();
         log.info("create a csv document");
 
@@ -44,6 +38,17 @@ public class FileCsvService {
             }
         } catch (IOException e) {
             log.info("Не удалось записать данные" + e.getMessage());
+        }
+    }
+
+    private void updateCsvFile() {
+        Path filePath = Path.of(fileName);
+        if (Files.exists(filePath)) {
+            try {
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                log.info("Ошибка при удалении файла: " + e.getMessage());
+            }
         }
     }
 }

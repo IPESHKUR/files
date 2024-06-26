@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 
-@RestController()
+@RestController
 @AllArgsConstructor
 public class FileController {
     private final FileTxtService fileService;
