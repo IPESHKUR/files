@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @RestController
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class FilePdfController {
     private final FilePdfService filePdfService;
 
     @GetMapping("/getPdf")
-    public ResponseEntity<File> createPdf() throws DocumentException, FileNotFoundException {
+    public ResponseEntity<File> createPdf() throws DocumentException, IOException {
         filePdfService.generatePdfFile();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

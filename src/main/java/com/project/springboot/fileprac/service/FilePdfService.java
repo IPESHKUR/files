@@ -9,7 +9,6 @@ import com.project.springboot.fileprac.repository.SupplierRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,21 +25,37 @@ public class FilePdfService {
 
     private final String filePdfName = "pdf-file.pdf";
 
+    private final String imageName = "podpis.png";
+
     private final SupplierRepository supplierRepository;
 
 
-    public void generatePdfFile() throws FileNotFoundException, DocumentException {
+    public void generatePdfFile() throws IOException, DocumentException {
         Document document = new Document();
+        Path pathI = Path.of(imageName);
+        Image img = Image.getInstance(pathI.toString());
+
         updateFile();
+
         log.info("Generate pdf file");
         PdfWriter.getInstance(document, new FileOutputStream("pdf-file.pdf"));
 
         document.open();
 
+        Paragraph titleParagraph = new Paragraph("General Table Suppliers",
+                new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD));
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
+        document.add(new Paragraph(" "));
+
         PdfPTable table = new PdfPTable(3);
+        table.setHorizontalAlignment(Element.ALIGN_CENTER);
         addTableHeader(table);
         addRows(table);
         document.add(table);
+
+        img.setAlignment(Element.ALIGN_RIGHT);
+        document.add(img);
 
         document.close();
     }
